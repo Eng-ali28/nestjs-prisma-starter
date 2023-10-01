@@ -11,7 +11,53 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id    String     @id() @default(uuid())
+  email String?  @unique
+  phoneNumber String @unique
+  password String
+  countryCode String
+  image String?
+  name  String
+  gender Gender
+  isActive Boolean @default(true)
+  firebaseToken String?
+  refreshToken String?
+
+  role Role @relation(fields: [roleId] , references: [id])
+  roleId String
+
+  @@map("users")
+  @@index([id])
+}
+
+model Role { 
+  id String @id() @default(uuid())
+  name String @unique
+
+  permissions Permission[]
+
+  user User[]
+
+  @@map("roles")
+  @@index([id])
+}
+
+model Permission {
+    id String @id() @default(uuid())
+    name PERMISSION @unique
+    function String
+
+    role Role[]
+
+    @@map("permissions")
+  @@index([id])
+}
+
+enum PERMISSION {
+  MANAGE
+}
+
+enum Gender {
+  MALE
+  FEMALE
 }

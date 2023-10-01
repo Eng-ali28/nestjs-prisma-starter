@@ -1,21 +1,23 @@
-FROM node:18-alpine AS builder
+FROM node:18.18.0-alpine AS builder
 
 WORKDIR /app
 
 COPY package*.json ./
 COPY prisma ./prisma/
 
-RUN npm install
+RUN npm install -g pnpm
+
+RUN pnpm install
 
 COPY . .
 
-RUN npm run build
+RUN pnpm build
 
-FROM node:16-alpine
+FROM node:18.18.0-alpine
 
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
-CMD [ "npm", "run", "start:prod" ]
+CMD [ "pnpm", "start:prod" ]

@@ -10,6 +10,8 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import ThrottlerConfig from './settings/config.throttle';
 import { GlobalExceptionFilters } from './common/global/global.exception';
 import { GlobalInterceptors } from './common/global/global.interceptor';
+import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
 import UtilModule from './common/util/util.module';
 
 @Module({
@@ -46,6 +48,8 @@ import UtilModule from './common/util/util.module';
       ],
     }),
     UtilModule,
+    UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [...GlobalExceptionFilters, ...GlobalInterceptors],
